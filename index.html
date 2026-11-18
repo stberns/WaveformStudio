@@ -1,0 +1,57 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Waveform Studio</title><link rel="stylesheet" href="style.css"></head>
+<body><header><a class="brand" href="./"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>WAVEFORM <em>STUDIO</em></a><label class="project" for="project">SESSION <input id="project" type="text" value="Untitled Session" maxlength="120" aria-label="Session file name" title="Click to rename the session" spellcheck="false"></label><div class="header-actions">
+  <div class="music-sources" role="group" aria-label="Music sources">
+    <a class="primary" href="https://pixabay.com/music/search/pixel/" target="_blank" rel="noopener noreferrer" aria-label="Pixabay pixel music (opens in a new tab)" title="Pixabay pixel music">
+      Pixabay
+    </a>
+    <a class="primary" href="https://www.bensound.com/royalty-free-music" target="_blank" rel="noopener noreferrer" aria-label="Bensound royalty-free music (opens in a new tab)" title="Bensound royalty-free music">
+      Bensound
+    </a>
+    <a class="primary" href="https://luvvoice.com/" target="_blank" rel="noopener noreferrer" aria-label="LuV Voice (opens in a new tab)" title="LuV Voice">
+      LuV Voice
+    </a>
+  </div>
+  <button id="theme" type="button" aria-label="Switch to light mode" title="Switch to light mode">☀</button><button id="export" class="primary">↓ &nbsp; Export audio</button></div></header>
+<nav aria-label="Editor menus" id="menus"></nav>
+<section class="toolbar console" aria-label="Audio tools">
+<div class="console-row">
+<div class="tool-bank transport" id="transport" aria-label="Transport"></div>
+<div class="tool-bank modes" id="modes" role="group" aria-label="Waveform tools"></div>
+<div class="tool-bank meters">
+<button class="meter" id="micMeter" data-action="monitor" title="Start or stop microphone monitoring"><b aria-hidden="true">♩</b><span class="meter-main"><span class="meter-scale">−54　　−42　　−30　　−18　　−6　　0</span><span class="meter-channel"><small>L</small><i></i></span><span class="meter-channel"><small>R</small><i></i></span></span><span class="meter-label">Start monitoring</span></button>
+<div class="meter" id="outMeter" aria-label="Playback level"><b aria-hidden="true">◖))</b><span class="meter-main"><span class="meter-scale">−54　　−42　　−30　　−18　　−6　　0</span><span class="meter-channel"><small>L</small><i></i></span><span class="meter-channel"><small>R</small><i></i></span></span></div>
+</div>
+</div>
+<div class="console-row secondary">
+<div class="tool-bank" id="editTools" aria-label="Edit tools"></div>
+<div class="tool-bank" id="historyTools" aria-label="History"></div>
+<div class="tool-bank" id="zoomTools" aria-label="Zoom tools"></div>
+<div class="tool-bank mixer">
+<label title="Microphone gain"><b aria-hidden="true">♩</b><input id="micGain" type="range" min="0" max="200" value="100" aria-label="Microphone gain"></label>
+<label title="Playback volume"><b aria-hidden="true">◖))</b><input id="volume" type="range" min="0" max="100" value="100" aria-label="Playback volume"></label>
+<button data-action="play" title="Play at selected speed" aria-label="Play at selected speed">▷</button><label title="Playback speed"><input id="speed" type="range" min=".25" max="2" step=".05" value="1" aria-label="Playback speed"><output id="speedValue">1.00×</output></label>
+</div>
+<output id="clock">00:00.000</output><button class="import" data-action="import">＋ Import audio</button>
+</div></section>
+<main><div class="workspace"><div class="ruler"><div class="trackhead">TRACKS <span id="count">00</span></div><canvas id="ruler" aria-label="Timeline ruler"></canvas></div><div id="tracks"></div><section id="empty"><div class="empty-icon" aria-hidden="true">∿</div><h1>Start with sound</h1><p>Drop audio files here to add them to your session.</p><div><button class="primary" data-action="import">Choose audio files</button> <button data-action="demo">Load demo</button></div><small>WAV · MP3 · FLAC · OGG · M4A <span>depending on browser support</span></small></section></div><aside><div class="aside-title">Effects</div><p class="aside-copy">Drag on a waveform to select a range. Effects apply to the whole track when no range is selected.</p><div id="effects"></div><div class="aside-title selection-title">Selection</div><label class="field">Start <input type="number" id="from" min="0" step=".001" value="0" aria-label="Selection start in seconds"> s</label><label class="field">End <input type="number" id="to" min="0" step=".001" value="0" aria-label="Selection end in seconds"> s</label><button data-action="all" class="selectall">Select entire track</button></aside></main>
+<footer><span id="status" role="status">Ready to import audio</span><small class="copyright">&copy; 2026 Mr Stephens. All rights reserved.</small><span>44,100 Hz <b>•</b> <span id="duration">00:00.000</span></span></footer>
+<input type="file" multiple hidden id="file" accept="audio/*,.wav,.mp3,.flac,.ogg,.m4a,.aiff,.opus">
+<input type="file" hidden id="projectFile" accept=".waveproject,.aup3">
+<dialog id="dialog"><form method="dialog" id="form"><h2 id="dialogTitle"></h2><div id="dialogBody"></div><div class="dialog-actions"><button value="cancel" formnovalidate>Cancel</button><button class="primary" id="confirm" value="ok">Apply</button></div></form></dialog>
+<dialog id="recordDialog" aria-labelledby="recordTitle">
+  <h2 id="recordTitle">Record microphone</h2>
+  <p id="recordStatus" role="status"></p>
+  <button id="allowMic" type="button">Allow microphone access</button>
+  <label id="recordInputLabel" hidden>Microphone <select id="recordInput"></select></label>
+  <a id="openRecordingTab" href="./" target="_blank" rel="noopener" hidden>Open Waveform Studio in a new tab</a>
+  <div id="recordLevels" role="group" aria-label="Live microphone levels">
+    <div class="meter-channel"><span>L</span><i></i></div>
+    <div class="meter-channel"><span>R</span><i></i></div>
+  </div>
+  <output id="recordClock" aria-label="Recording duration">00:00.000</output>
+  <div class="dialog-actions">
+    <button id="discardTake" type="button">Cancel</button>
+    <button id="finishTake" class="primary" type="button" disabled>Start recording</button>
+  </div>
+</dialog>
+<script type="module" src="app.js"></script></body></html>
